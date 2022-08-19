@@ -58,14 +58,10 @@ export const CaseCovidLis = () => {
   }, [url]);
 
   return (
-    <Grid container mt={5}>
-      <Grid container>
-        <Grid item xs={6} justifyContent="center">
-          <Globalcases />
-        </Grid>
-        <Grid item xs={6} justifyContent="center">
-          <Countryglobalcases slug={form.Slug} />
-        </Grid>
+    <>
+      <Grid container justifyContent="center" mt={5}>
+        <Countryglobalcases slug={form.Slug} />
+        <Globalcases />
       </Grid>
 
       <Grid container justifyContent="center" mt={8}>
@@ -101,6 +97,6 @@ export const CaseCovidLis = () => {
           </Grid>
         </Paper>
       </Grid>
-    </Grid>
+    </>
   );
 };

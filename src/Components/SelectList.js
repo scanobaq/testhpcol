@@ -13,7 +13,6 @@ export const SelectList = ({ title, form, handleChange, handleBlur, api }) => {
       .get(api)
       .then((res) => {
         if (!res.err) {
-          console.log(res);
           setData(res);
         } else {
         }

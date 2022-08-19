@@ -1,12 +1,16 @@
 import { makeStyles } from "@material-ui/core";
 import {
   Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
   FormHelperText,
   Grid,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
@@ -45,11 +49,7 @@ const validationsForm = (form) => {
     errors.error = true;
   }
   if (!form.Apellido) {
-    errors.Apellido = "Debe ingresar su apellido";
-    errors.error = true;
-  }
-  if (!form.Fechanacimiento) {
-    errors.Fechanacimiento = "Debe ingresar la fecha de nacimiento";
+    errors.Apellido = "Debe ingresar un apellido";
     errors.error = true;
   }
   if (!form.Temperatura) {
@@ -59,8 +59,19 @@ const validationsForm = (form) => {
   return errors;
 };
 
+const columns = [
+  { field: "ID", headerName: "ID", width: 150 },
+  { field: "Nombre", headerName: "Nombre", width: 150 },
+  { field: "Apellido", headerName: "Apellido", width: 150 },
+  { field: "Temperatura", headerName: "Temperatura", width: 150 },
+  { field: "Fiebre", headerName: "Fiebre", width: 150 },
+  { field: "Dolorcabeza", headerName: "Dolor de Cabeza", width: 150 },
+  { field: "Perdidaolfato", headerName: "Perdida Olfato", width: 150 },
+];
+
 export const NewCase = () => {
   const initialForm = {
+    ID: 0,
     Nombre: "",
     Apellido: "",
     Fechanacimiento: "",
@@ -70,19 +81,26 @@ export const NewCase = () => {
     Perdidaolfato: false,
   };
   const styles = useStyles();
-  const { form, errors, handleChange, handleBlur, setForm } = useForm(
-    initialForm,
-    validationsForm
-  );
+  const { form, errors, handleChange, handleBlur, handleChecked, setForm } =
+    useForm(initialForm, validationsForm);
   const [value, setValue] = useState(new Date());
+  const [data, setData] = useState([]);
+  const [count, setCount] = useState(1);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setCount(count + 1);
+    setForm({ ...form, ID: count });
+    setData((data) => [...data, form]);
+  };
 
   return (
     <>
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" mt={8}>
         <Paper elevation={3} className={styles.paper}>
           <Box container sx={{ maxWidth: "100%", "& button": { m: 1 } }}>
             <Grid container spacing={2} justifyContent="center" pl={5} pr={5}>
-              <Grid container spacing={2} justifyContent="center" pl={5} pr={5}>
+              <Grid container justifyContent="center" mt={5}>
                 <Typography component="h1" variant="h6" noWrap>
                   Registro de nuevos casos
                 </Typography>
@@ -138,10 +156,11 @@ export const NewCase = () => {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={3} className={styles.grid}>
+              <Grid item xs={3} container justifyContent="center">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
                     id="Fechanacimiento"
+                    // name="FechaCompra"
                     inputFormat="dd/MM/yyyy"
                     label="Fecha Nacimiento"
                     onChange={(newvalue) => {
@@ -164,11 +183,6 @@ export const NewCase = () => {
                     )}
                   ></DesktopDatePicker>
                 </LocalizationProvider>
-                {errors.Fechanacimiento && (
-                  <FormHelperText id="my-helper-text" error>
-                    {errors.Fechanacimiento}
-                  </FormHelperText>
-                )}
               </Grid>
               <Grid
                 item
@@ -181,6 +195,73 @@ export const NewCase = () => {
                 <Typography component="h1" variant="h6" noWrap>
                   Seleccione los sintomas
                 </Typography>
+              </Grid>
+              <Grid item xs={4} container justifyContent="center">
+                <FormControlLabel
+                  label="FIEBRE"
+                  control={
+                    <Checkbox
+                      name="Fiebre"
+                      checked={form.Fiebre || false}
+                      onChange={handleChecked}
+                    />
+                  }
+                />
+              </Grid>
+              <Grid item xs={4} container justifyContent="center">
+                <FormControlLabel
+                  label="DOLOR CABEZA"
+                  control={
+                    <Checkbox
+                      name="Dolorcabeza"
+                      checked={form.Dolorcabeza || false}
+                      onChange={handleChecked}
+                    />
+                  }
+                />
+              </Grid>
+              <Grid item xs={4} container justifyContent="center">
+                <FormControlLabel
+                  label="PERDIDA OLFATO"
+                  control={
+                    <Checkbox
+                      name="Perdidaolfato"
+                      checked={form.Perdidaolfato || false}
+                      onChange={handleChecked}
+                    />
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} container justifyContent="end">
+                <Button
+                  id="btn-addAportante"
+                  name="btn-addAportante"
+                  color="primary"
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disabled={errors.error ? true : false}
+                >
+                  Agregar
+                </Button>
+              </Grid>
+              <Grid container justifyContent="center" mt={8}>
+                <div style={{ height: 600, width: "100%" }}>
+                  <DataGrid
+                    disableColumnFilter
+                    disableColumnSelector
+                    disableDensitySelector
+                    rows={data}
+                    columns={columns}
+                    getRowId={(data) => data.ID}
+                    components={{ Toolbar: GridToolbar }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
+                      },
+                    }}
+                  />
+                </div>
               </Grid>
             </Grid>
           </Box>

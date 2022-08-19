@@ -13,9 +13,14 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, Navigate, NavLink } from "react-router-dom";
 
-const pages = ["Perfil", "Estadisticas", "Nuevos Casos"];
+const pages = [
+  { id: 0, pagename: "Estadisticas", link: "/home/casecovidlis" },
+  { id: 1, pagename: "Perfil", link: "/" },
+  { id: 2, pagename: "Agregar Caso", link: "/home/newcase" },
+];
+// const pages = ["Perfil", "Estadisticas", "Nuevos Casos"];
 const settings = ["Account", "Logout"];
 
 const Navmenu = () => {
@@ -90,8 +95,8 @@ const Navmenu = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.pagename} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.pagename}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -117,13 +122,22 @@ const Navmenu = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+              // <Typography textAlign="center" href={page.link}>
+              //   {page.pagename}
+              // </Typography>
+              // <Button
+              //   key={page.pagename}
+              //   onClick={handleCloseNavMenu}
+              //   sx={{ my: 2, color: "white", display: "block" }}
+              // >
+              //   {page.pagename}
+              // </Button>
+
+              <NavLink to={page.link} key={page.id}>
+                <Typography textAlign="center" m={3} sx={{ color: "white" }}>
+                  {page.pagename}
+                </Typography>
+              </NavLink>
             ))}
           </Box>
 

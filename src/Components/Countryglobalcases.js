@@ -27,20 +27,18 @@ export const Countryglobalcases = (props) => {
       .get(url)
       .then((res) => {
         if (!res.err) {
-          console.log(res);
-
           newData = res.Countries.filter((item, indice) =>
             item.Slug.includes(props.slug)
           );
           setData(newData);
-          console.log(newData);
         } else {
         }
       });
   }, [props.slug]);
 
   return (
-    <Grid container justifyContent="center">
+    // <Grid container justifyContent="center">
+    <>
       {data.map((i) => (
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
@@ -90,6 +88,8 @@ export const Countryglobalcases = (props) => {
           <CardActions></CardActions>
         </Card>
       ))}
-    </Grid>
+    </>
+
+    // </Grid>
   );
 };

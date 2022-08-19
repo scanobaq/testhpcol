@@ -26,7 +26,6 @@ export const Globalcases = (props) => {
       .get(url)
       .then((res) => {
         if (!res.err) {
-          console.log(res);
           setData(res);
         } else {
         }
@@ -34,7 +33,8 @@ export const Globalcases = (props) => {
   }, []);
 
   return (
-    <Grid container justifyContent="center">
+    // <Grid container justifyContent="center">
+    <>
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <Grid container justifyContent="start">
@@ -82,6 +82,7 @@ export const Globalcases = (props) => {
         </CardContent>
         <CardActions></CardActions>
       </Card>
-    </Grid>
+    </>
+    // </Grid>
   );
 };

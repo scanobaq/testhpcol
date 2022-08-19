@@ -1,14 +1,17 @@
-import { Grid } from "@mui/material";
 import React from "react";
+import { Route, Routes } from "react-router-dom";
 import { CaseCovidLis } from "./CaseCovidLis";
-import { Globalcases } from "./Globalcases";
 import Navmenu from "./Navmenu";
+import { NewCase } from "./NewCase";
 
 export const Home = () => {
   return (
-    <div>
+    <>
       <Navmenu />
-      <CaseCovidLis />
-    </div>
+      <Routes>
+        <Route path="/home/casecovidlis" element={<CaseCovidLis />} />
+        <Route path="/home/newcase" element={<NewCase />} />
+      </Routes>
+    </>
   );
 };
